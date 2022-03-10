@@ -1,0 +1,15 @@
+# FROM debian:11
+FROM dyalog/dyalog
+USER root
+RUN apt-get update && apt-get install -y python3 git
+
+USER dyalog
+RUN git clone https://github.com/Dyalog/pynapl.git && cd pynapl && git checkout 8b17bceda64b182cf89f4c9b7b77580ec9daf2ed
+ADD patch /home/dyalog/
+ADD env.sh /home/dyalog/
+RUN cd pynapl && patch -p1 < ../patch
+RUN cat env.sh >> .bashrc
+ENTRYPOINT []
+CMD []
+
+# pynapl doesn't work with the dyalog image
