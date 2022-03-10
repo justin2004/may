@@ -5,33 +5,13 @@
              [libpython-clj2.require :refer [require-python]]
              [libpython-clj2.python :as py :refer [py. py.. py.-]]))
 
-(core/init)
 
-; getting the image in APL
-; (time (may/apl "a←⊃∆ ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png")))
-(time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png")))
-(may/apl "⍴img")
-(time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/Sia.png")))
-(may/apl "vecToMat←{ dims←⊃1⌷⍵
-                     vec←⊃2⌷⍵
-                     m←1=3|⍳≢vec
-                     dims ⍴ (m⊂vec)} ⋄ 0")
-(may/apl "matToVec←{⊃,/,⍵} ⋄ 0") ;good -- it removes structure
+(defn rgb [n]
+  (let [r (bit-and 0xff (bit-shift-right n 16))
+        g (bit-and 0xff (bit-shift-right n 8))
+        b (bit-and 0xff (bit-shift-right n 0))]
+    [r g b]))
 
-; it is faster to have no structure (just numbers)
-; getting the image out of APL
-(time (to-png 598 500 (may/apl "matToVec img"))) ;good
-(may/apl "matToVec 3 3 ⍴ ⊂(1 2 3) ") ; example
-
-; getting the image out of APL
-; (time (print (vec->png 304 540 (map vec->rgb (may/apl-c ",imgred")))))
-; (print (vec->png 100 100 (map vec->rgb (may/apl-c ",?100 100 ⍴ (⊂1 1 255)"))))
-; (print (vec->png 100 100 (map vec->rgb (may/apl-c ",100 100↑imgred"))))
-
-; assumes 3 channels (rgb)
-(defn to-png [rows cols v]
-  "`v` is a vec (with no nesting) of r g b r g b etc. "
-  (print (vec->png rows cols (map vec->rgb (partition 3 v)))))
 
 (defn png->vec [path]
   "returns: [rows col] [rgbs] "
@@ -70,9 +50,36 @@
 ; (rgb (vec->rgb [7 2 7]))
 ; (vec->png 100 100 (doall (map vec->rgb (may/apl-c "10000 ⍴ ∆" [255 0 0]))))
 
-(defn rgb [n]
-  (let [r (bit-and 0xff (bit-shift-right n 16))
-        g (bit-and 0xff (bit-shift-right n 8))
-        b (bit-and 0xff (bit-shift-right n 0))]
-    [r g b]))
+
+; assumes 3 channels (rgb)
+(defn to-png [rows cols v]
+  "`v` is a vec (with no nesting) of r g b r g b etc. "
+  (print (vec->png rows cols (map vec->rgb (partition 3 v)))))
+
+; (core/init)
+
+
+; helper functions
+(may/apl "vecToMat←{ dims←⊃1⌷⍵
+                     vec←⊃2⌷⍵
+                     m←1=3|⍳≢vec
+                     dims ⍴ (m⊂vec)} ⋄ 0")
+(may/apl "matToVec←{⊃,/,⍵} ⋄ 0") ;good -- it removes structure
+
+; getting the image in APL
+; (time (may/apl "a←⊃∆ ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png")))
+(time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png")))
+(may/apl "⍴img")
+(time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/Sia.png")))
+
+; it is faster to have no structure (just numbers)
+; getting the image out of APL
+(time (to-png 598 500 (may/apl "matToVec img"))) ;good
+(may/apl "matToVec 3 3 ⍴ ⊂(1 2 3) ") ; example
+
+; getting the image out of APL
+; (time (print (vec->png 304 540 (map vec->rgb (may/apl-c ",imgred")))))
+; (print (vec->png 100 100 (map vec->rgb (may/apl-c ",?100 100 ⍴ (⊂1 1 255)"))))
+; (print (vec->png 100 100 (map vec->rgb (may/apl-c ",100 100↑imgred"))))
+
 
