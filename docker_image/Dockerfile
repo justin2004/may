@@ -21,6 +21,9 @@ RUN git clone --depth=1 https://github.com/liquidz/vim-iced.git
 # just for testing
 RUN apt-get install -y python3-pip && pip3 install numpy
 
+# TODO this isn't working as expected
+RUN echo 'declare -x PYTHONPATH=/root/pynapl' >> /root/.bashrc
+
 ENTRYPOINT []
 WORKDIR /mnt
 CMD /root/vim-iced/bin/iced repl

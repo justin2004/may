@@ -1,6 +1,5 @@
-(ns justin2004.may.scratch
-  (:require  [justin2004.may.core :as may]
-             [mikera.image.core :as mi]
+(ns may.scratch
+  (:require  [may.core :as may]
              [libpython-clj2.java-api :as ja]
              [libpython-clj2.require :refer [require-python]]
              [libpython-clj2.python :as py :refer [py. py.. py.-]]))
@@ -56,30 +55,29 @@
   "`v` is a vec (with no nesting) of r g b r g b etc. "
   (print (vec->png rows cols (map vec->rgb (partition 3 v)))))
 
-; (core/init)
-
 
 ; helper functions
-(may/apl "vecToMat←{ dims←⊃1⌷⍵
-                     vec←⊃2⌷⍵
-                     m←1=3|⍳≢vec
-                     dims ⍴ (m⊂vec)} ⋄ 0")
-(may/apl "matToVec←{⊃,/,⍵} ⋄ 0") ;good -- it removes structure
+(defn init []
+  (may/apl "vecToMat←{ dims←⊃1⌷⍵
+           vec←⊃2⌷⍵
+           m←1=3|⍳≢vec
+           dims ⍴ (m⊂vec)} ⋄ 0")
+  (may/apl "matToVec←{⊃,/,⍵} ⋄ 0")) ;good -- it removes structure
 
 ; getting the image in APL
 ; (time (may/apl "a←⊃∆ ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png")))
-(time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png")))
-(may/apl "⍴img")
-(time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/Sia.png")))
+(comment (time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/twitter_photo1_sm.png"))))
+(comment (may/apl "⍴img"))
+(comment (time (may/apl "img←vecToMat(⊃∆) ⋄ 0" (png->vec "/mnt/Sia.png"))))
 
 ; it is faster to have no structure (just numbers)
 ; getting the image out of APL
-(time (to-png 598 500 (may/apl "matToVec img"))) ;good
-(may/apl "matToVec 3 3 ⍴ ⊂(1 2 3) ") ; example
+(comment (time (to-png 598 500 (may/apl-c "matToVec img")))) ;good
+(comment (may/apl "matToVec 3 3 ⍴ ⊂(1 2 3) ")) ; example
 
 ; getting the image out of APL
 ; (time (print (vec->png 304 540 (map vec->rgb (may/apl-c ",imgred")))))
-; (print (vec->png 100 100 (map vec->rgb (may/apl-c ",?100 100 ⍴ (⊂1 1 255)"))))
+(comment (to-png 100 100 (may/apl-c "matToVec ,?100 100 ⍴ (⊂255 255 255)")))
 ; (print (vec->png 100 100 (map vec->rgb (may/apl-c ",100 100↑imgred"))))
 
 

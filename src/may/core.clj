@@ -1,20 +1,25 @@
-(ns justin2004.may.core
-  (:require  [libpython-clj2.java-api :as ja]
-             [libpython-clj2.require :refer [require-python]]
-             [libpython-clj2.python :as py :refer [py. py.. py.-]]))
+(ns may.core
+  (:require 
+    ; [may.core :as core]
+            [libpython-clj2.java-api :as ja]
+            [libpython-clj2.require :refer [require-python]]
+            [libpython-clj2.python :as py :refer [py. py.. py.-]]))
 
-(def apl-instance nil) ; TODO
+(def apl-instance (atom ()))
 
 (defn init 
   "start up Dyalog APL"
   []
   (py/run-simple-string "import sys")
   (py/run-simple-string "sys.path.append('/root/pynapl')")
-; (py/run-simple-string "from pynapl import APL")
+  ; (py/run-simple-string "from pynapl import APL")
   (require-python '[pynapl.APL :as pnapl])
   ; (def apl-instance (pnapl/APL))
-  (eval '(def apl-instance (pnapl/APL))))
-
+  ; (eval '(def apl-instance (pnapl/APL)))
+  ; (in-ns 'may.core)
+  ; (eval '(def apl-instance (pnapl/APL)))
+  ; (def apl-instance (pnapl/APL))
+  (eval '(reset! apl-instance (pnapl/APL))))
 
 (comment (init))
 
@@ -23,9 +28,9 @@
 (defn apl
   "evaluate `apl-string` in Dyalog APL... i think the result gets copied into a python"
   ([apl-string]
-   (py/call-attr apl-instance "eval" apl-string))
+   (py/call-attr @apl-instance "eval" apl-string))
   ([apl-string obj]
-   (py/call-attr apl-instance "eval" apl-string obj)))
+   (py/call-attr @apl-instance "eval" apl-string obj)))
 ; obj is ∆ in APL
 ; (py/call-attr apl-instance "eval" "2⌷⊃∆" [4 5 9 0])
 ; i thought i would need this to convert a jvm obj to a python obj

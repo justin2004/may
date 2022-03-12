@@ -18,6 +18,9 @@ I am just playing around with it for now.
 
 ## how
 
+m2
+lein pom && lein jar && lein install
+
 ## notes
 
 ```
