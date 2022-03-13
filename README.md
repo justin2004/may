@@ -32,11 +32,11 @@ I am just playing around with it for now.
 
 `vim src/may/example.clj`
 
-- in vim attach the REPL
+- in vim attach the REPL:
 
 `:IcedConnect`
 
-- then:
+- then evaluate some APL and have fun:
 
 ```clojure
 (ns may.example
