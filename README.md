@@ -35,7 +35,7 @@ I am just playing around with it for now.
 
 - then:
 
-```
+```clojure
 (ns may.example
   (:require  [may.core :as may]
              [may.core :refer [apl-instance]] ; TODO until i figure out a better way this is necessary
