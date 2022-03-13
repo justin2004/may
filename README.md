@@ -3,17 +3,20 @@
 ## what
 
 A docker image that has everything you need to run Clojure with the ability to evaluate APL expressions with [Dyalog APL](https://www.dyalog.com/).
+
 AND
+
 Some Clojure functions that help you evaluate APL.
 
 Clojure talks to Python via [clj-python/libpython-clj](https://github.com/clj-python/libpython-clj).
+
 Python talks to Dyalog APL via [Py'n'APL](https://github.com/Dyalog/pynapl).
 
 ## why
 
 I wanted [April](https://github.com/phantomics/april) but with a mature and optimized APL interpreter.
 So this is my attempt to approximate that by gluing some existing things together.
-I don't claim that this is efficient.
+I don't claim that this is efficient (as Python is used as a middleman).
 I am just playing around with it for now.
 
 ## how
