@@ -19,7 +19,7 @@
 ; send Clojure data into Dyalog APL 
 ;  what is the shape (⍴) of the Clojure vector [2 4 6]
 (may/apl-c "⍴⊃∆" [2 4 6]) ; => [3]
-; with in Dyalog APL, ∆ is the enclosed data you pass in from Clojure
+; within Dyalog APL, ∆ is the enclosed data you pass in from Clojure
 
 ; 3 3 reshape of the Clojure vector [2 4 6]
 (may/apl-c "3 3 ⍴ ⊃∆" [2 4 6]) ; => [[2 4 6] [2 4 6] [2 4 6]]
